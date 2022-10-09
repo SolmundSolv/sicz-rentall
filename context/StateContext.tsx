@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import Item from "../components/Item";
 
 interface AppContextProps {
@@ -27,3 +27,4 @@ const StateContext = ({ children }) => {
 };
 
 export default StateContext;
+export const useStateContext = () => useContext(Context);
