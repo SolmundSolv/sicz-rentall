@@ -1,0 +1,10 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "tsconfig.json",
+    "tsconfigRootDir": "D:\\Projects\\SiczConstruction\\SiczRental\\sicz-rentall"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "include": [".eslintrc.js"]
+}
