@@ -26,72 +26,24 @@ import { trpc } from "../../utils/trpc";
 import { router } from "@trpc/server";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
-const product = {
-    name: "Basic Tee 6-Pack",
-    price: "$192",
-    href: "#",
-    breadcrumbs: [
-        { id: 1, name: "Men", href: "#" },
-        { id: 2, name: "Clothing", href: "#" },
-    ],
-    images: [
-        {
-            src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-            alt: "Two each of gray, white, and black shirts laying flat.",
-        },
-        {
-            src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-            alt: "Model wearing plain black basic tee.",
-        },
-        {
-            src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-            alt: "Model wearing plain gray basic tee.",
-        },
-        {
-            src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-            alt: "Model wearing plain white basic tee.",
-        },
-    ],
-    colors: [
-        { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-        { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-        { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-    ],
-    sizes: [
-        { name: "XXS", inStock: false },
-        { name: "XS", inStock: true },
-        { name: "S", inStock: true },
-        { name: "M", inStock: true },
-        { name: "L", inStock: true },
-        { name: "XL", inStock: true },
-        { name: "2XL", inStock: true },
-        { name: "3XL", inStock: true },
-    ],
-    description:
-        'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-    highlights: ["Hand cut and sewn locally", "Dyed with our proprietary colors", "Pre-washed & pre-shrunk", "Ultra-soft 100% cotton"],
-    details:
-        'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
-const reviews = { href: "#", average: 4, totalCount: 117 };
+import { useStateContext } from "../../../context/StateContext";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 const Product: NextPage = () => {
-    const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-    const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+    const ctx = useStateContext();
     const router = useRouter();
     const { id } = router.query;
-    const { data: products, isLoading } = trpc.useQuery(["product.getOnebyId", { id: id?.toString() ?? "0" }]);
-    if (isLoading || !products) return <div>Loading...</div>;
+    const { data: product, isLoading } = trpc.useQuery(["product.getOnebyId", { id: id?.toString() ?? "0" }]);
+    if (isLoading || !product) return <div>Loading...</div>;
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-600">
             <div className="pt-6">
                 <nav aria-label="Breadcrumb">
                     {/* <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                        {products?.map((breadcrumb) => (
+                        {product?.map((breadcrumb) => (
                             <li key={breadcrumb.id}>
                                 <div className="flex items-center">
                                     <a href="#" className="mr-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -113,18 +65,18 @@ const Product: NextPage = () => {
                 {/* Image gallery */}
                 <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
                     <div className="aspect-w-3 aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
-                        <img src={products?.img} alt={products?.img} className="h-full w-full object-cover object-center" />
+                        <img src={product?.img} alt={product?.img} className="h-full w-full object-cover object-center" />
                     </div>
                     <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
                         <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-                            <img src={products?.img} alt={products?.img} className="h-full w-full object-cover object-center" />
+                            <img src={product?.img} alt={product?.img} className="h-full w-full object-cover object-center" />
                         </div>
                         <div className="aspect-w-3 aspect-h-2 overflow-hidden rounded-lg">
-                            <img src={products?.img} alt={products?.img} className="h-full w-full object-cover object-center" />
+                            <img src={product?.img} alt={product?.img} className="h-full w-full object-cover object-center" />
                         </div>
                     </div>
                     <div className="aspect-w-4 aspect-h-5 sm:overflow-hidden sm:rounded-lg lg:aspect-w-3 lg:aspect-h-4">
-                        <img src={products?.img} alt={products?.img} className="h-full w-full object-cover object-center" />
+                        <img src={product?.img} alt={product?.img} className="h-full w-full object-cover object-center" />
                     </div>
                 </div>
 
@@ -132,16 +84,18 @@ const Product: NextPage = () => {
                 <div className="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
                     <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
                         <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
-                            {products?.name} {products?.category?.name}
+                            {product?.name} {product?.category?.name}
                         </h1>
                     </div>
 
                     {/* Options */}
                     <div className="mt-4 lg:row-span-3 lg:mt-0">
                         <h2 className="sr-only">Product information</h2>
-                        <p className="text-3xl tracking-tight text-gray-900 dark:text-white">$ {products?.price.toString()}</p>
+                        <p className="text-3xl tracking-tight text-gray-900 dark:text-white">$ {product?.price.toString()}</p>
                         <div className="mt-8 flex flex-grow gap-6">
-                            <button className="flex-grow rounded-xl border-2 border-yellow-400 bg-white px-8 py-2 font-bold text-yellow-400">Add to cart</button>
+                            <button className="flex-grow rounded-xl border-2 border-yellow-400 bg-white px-8 py-2 font-bold text-yellow-400" onClick={() => ctx?.onAdd(product)}>
+                                Add to cart
+                            </button>
                             <button className="flex-grow rounded-xl border-2  border-yellow-400 bg-yellow-400 px-8 py-2 font-bold text-white">Buy now</button>
                         </div>
                         {/*      Reviews
@@ -263,7 +217,7 @@ const Product: NextPage = () => {
                             <h3 className="sr-only">Description</h3>
 
                             <div className="space-y-6">
-                                <p className="text-base text-gray-900 dark:text-white">{products?.description}</p>
+                                <p className="text-base text-gray-900 dark:text-white">{product?.description}</p>
                             </div>
                         </div>
 
@@ -272,11 +226,7 @@ const Product: NextPage = () => {
 
                             <div className="mt-4">
                                 <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                                    {product.highlights.map((highlight) => (
-                                        <li key={highlight} className="text-gray-400 dark:text-gray-50">
-                                            <span className="text-gray-600 dark:text-gray-200">{highlight}</span>
-                                        </li>
-                                    ))}
+                                    LIST
                                 </ul>
                             </div>
                         </div>
@@ -285,7 +235,7 @@ const Product: NextPage = () => {
                             <h2 className="text-sm font-medium text-gray-900 dark:text-white">Details</h2>
 
                             <div className="mt-4 space-y-6">
-                                <p className="text-sm text-gray-600">{product.details}</p>
+                                <p className="text-sm text-gray-600">DETAILS</p>
                             </div>
                         </div>
                     </div>

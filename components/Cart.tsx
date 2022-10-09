@@ -1,7 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useRef } from "react";
+import { map } from "zod";
+import { useStateContext } from "../context/StateContext";
 
 const Cart = ({ open, setOpen }) => {
+    const cartRef = useRef();
+    const ctx = useStateContext();
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-40 " onClose={setOpen}>
@@ -26,8 +30,15 @@ const Cart = ({ open, setOpen }) => {
                         leaveFrom="-translate-x-0"
                         leaveTo="translate-x-full"
                     >
-                        <Dialog.Panel className="absolute top-0 right-0 bottom-0 flex w-full max-w-md flex-col overflow-y-auto bg-white pb-12 shadow-xl dark:bg-gray-800">
-                            <div>Cart</div>
+                        <Dialog.Panel className="absolute top-0 right-0 bottom-0 flex w-full max-w-md flex-col overflow-y-auto bg-white pb-12 shadow-xl dark:bg-gray-800 dark:text-white">
+                            <div className="p-6">
+                                {ctx?.cartItems.map((item, index) => (
+                                    <div>
+                                        {index + 1} {item.name}
+                                    </div>
+                                ))}
+                            </div>
+                            {ctx?.totalPrice}
                         </Dialog.Panel>
                     </Transition.Child>
                 </div>
