@@ -140,6 +140,10 @@ const Product: NextPage = () => {
                     <div className="mt-4 lg:row-span-3 lg:mt-0">
                         <h2 className="sr-only">Product information</h2>
                         <p className="text-3xl tracking-tight text-gray-900 dark:text-white">$ {products?.price.toString()}</p>
+                        <div className="mt-8 flex flex-grow gap-6">
+                            <button className="flex-grow rounded-xl border-2 border-yellow-400 bg-white px-8 py-2 font-bold text-yellow-400">Add to cart</button>
+                            <button className="flex-grow rounded-xl border-2  border-yellow-400 bg-yellow-400 px-8 py-2 font-bold text-white">Buy now</button>
+                        </div>
                         {/*      Reviews
                         <div className="mt-6">
                             <h3 className="sr-only">Reviews</h3>
