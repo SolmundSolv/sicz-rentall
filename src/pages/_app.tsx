@@ -7,12 +7,15 @@ import superjson from "superjson";
 import type { AppRouter } from "../server/router";
 import Layout from "../../components/Layout";
 import "../styles/globals.css";
+import StateContext from "../../context/StateContext";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
     return (
-        <Layout>
-            <Component {...pageProps} />;
-        </Layout>
+        <StateContext>
+            <Layout>
+                <Component {...pageProps} />;
+            </Layout>
+        </StateContext>
     );
 };
 
