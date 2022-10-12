@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link";
 import React, { Fragment, useState, useRef } from "react";
-import { useStateContext } from "../context/StateContext";
+import StateContext, { useStateContext } from "../../context/StateContext";
 
 const Cart = ({ open, setOpen }) => {
     const cartRef = useRef();

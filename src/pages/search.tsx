@@ -1,10 +1,12 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React from "react";
-import Item from "../../components/Item";
+import React, { ReactElement } from "react";
+import Item from "../../components/Store/Item";
+import Layout from "../../components/Store/Layout";
 import { trpc } from "../utils/trpc";
+import { NextPageWithLayout } from "./_app";
 
-const Search: NextPage = () => {
+const Search: NextPageWithLayout = () => {
     const router = useRouter();
     const { value } = router.query;
     if (value) var { data: products, isLoading } = trpc.useQuery(["product.getByName", { name: value.toString() }]);
@@ -34,4 +36,7 @@ const Search: NextPage = () => {
     );
 };
 
+Search.getLayout = function getLayout(page: ReactElement) {
+    return <Layout>{page}</Layout>;
+};
 export default Search;

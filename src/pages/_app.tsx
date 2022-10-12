@@ -5,19 +5,24 @@ import { withTRPC } from "@trpc/next";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
 import type { AppRouter } from "../server/router";
-import Layout from "../../components/Layout";
 import "../styles/globals.css";
-import StateContext from "../../context/StateContext";
+import { ReactElement, ReactNode } from "react";
+import { NextPage } from "next";
+import { AppProps } from "next/app";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
-    return (
-        <StateContext>
-            <Layout>
-                <Component {...pageProps} />;
-            </Layout>
-        </StateContext>
-    );
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+    getLayout?: (page: ReactElement) => ReactNode;
 };
+
+type AppPropsWithLayout = AppProps & {
+    Component: NextPageWithLayout;
+};
+
+const MyApp = (({ Component, pageProps }: AppPropsWithLayout) => {
+    const getLayout = Component.getLayout ?? ((page) => page);
+
+    return getLayout(<Component {...pageProps} />);
+}) as AppType;
 
 const getBaseUrl = () => {
     if (typeof window !== "undefined") return ""; // browser should use relative url

@@ -1,9 +1,11 @@
 import { NextPage } from "next";
-import React from "react";
-import OrderForm from "../../components/OrderForm";
+import React, { ReactElement } from "react";
+import Layout from "../../components/Store/Layout";
+import OrderForm from "../../components/Store/OrderForm";
 import { useStateContext } from "../../context/StateContext";
+import { NextPageWithLayout } from "./_app";
 
-const Cart: NextPage = () => {
+const Cart: NextPageWithLayout = () => {
     const ctx = useStateContext();
     return (
         <div className="min-h-screen bg-white dark:bg-gray-600">
@@ -23,4 +25,7 @@ const Cart: NextPage = () => {
     );
 };
 
+Cart.getLayout = function getLayout(page: ReactElement) {
+    return <Layout>{page}</Layout>;
+};
 export default Cart;

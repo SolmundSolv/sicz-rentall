@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { prisma } from "../src/server/db/client";
+import { prisma } from "../../src/server/db/client";
 import { any } from "zod";
 import type { GetServerSideProps } from "next";
 

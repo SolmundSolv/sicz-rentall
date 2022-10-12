@@ -4,7 +4,7 @@ import { Flowbite, DarkThemeToggle } from "flowbite-react";
 import Link from "next/link";
 import React, { Fragment, useState } from "react";
 import Cart from "./Cart";
-import { useStateContext } from "../context/StateContext";
+import { useStateContext } from "../../context/StateContext";
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");

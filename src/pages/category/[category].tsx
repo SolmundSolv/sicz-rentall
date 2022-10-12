@@ -1,10 +1,12 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React from "react";
-import Item from "../../../components/Item";
+import React, { ReactElement } from "react";
+import Item from "../../../components/Store/Item";
+import Layout from "../../../components/Store/Layout";
 import { trpc } from "../../utils/trpc";
+import { NextPageWithLayout } from "../_app";
 
-const Category: NextPage = () => {
+const Category: NextPageWithLayout = () => {
     const router = useRouter();
     const { category } = router.query;
     if (category) var { data: products, isLoading } = trpc.useQuery(["product.getByCategory", { category: category.toString() }]);
@@ -34,4 +36,7 @@ const Category: NextPage = () => {
     );
 };
 
+Category.getLayout = function getLayout(page: ReactElement) {
+    return <Layout>{page}</Layout>;
+};
 export default Category;

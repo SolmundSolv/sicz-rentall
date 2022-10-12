@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import React, { DetailedHTMLProps, InputHTMLAttributes, LegacyRef, RefObject, useRef } from "react";
-import { useStateContext } from "../context/StateContext";
+import { useStateContext } from "../../context/StateContext";
 
 const OrderForm: NextPage = () => {
     const ctx = useStateContext();
@@ -32,7 +32,6 @@ const OrderForm: NextPage = () => {
                 alert("Something goes wrong");
             }
         };
-        console.log(JSON.stringify(formData));
         hxr.send(JSON.stringify(formData));
     }
     return (

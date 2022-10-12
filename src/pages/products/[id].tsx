@@ -19,7 +19,7 @@
   }
   ```
 */
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { RadioGroup } from "@headlessui/react";
 import { trpc } from "../../utils/trpc";
@@ -27,11 +27,13 @@ import { router } from "@trpc/server";
 import { useRouter } from "next/router";
 import { NextPage } from "next";
 import { useStateContext } from "../../../context/StateContext";
+import Layout from "../../../components/Store/Layout";
+import { NextPageWithLayout } from "../_app";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
-const Product: NextPage = () => {
+const Product: NextPageWithLayout = () => {
     const ctx = useStateContext();
     const router = useRouter();
     const { id } = router.query;
@@ -243,5 +245,8 @@ const Product: NextPage = () => {
             </div>
         </div>
     );
+};
+Product.getLayout = function getLayout(page: ReactElement) {
+    return <Layout>{page}</Layout>;
 };
 export default Product;

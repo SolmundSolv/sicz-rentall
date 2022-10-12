@@ -1,9 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { trpc } from "../utils/trpc";
-import Item from "../../components/Item";
+import Item from "../../components/Store/Item";
+import { ReactElement } from "react";
+import Layout from "../../components/Store/Layout";
+import { NextPageWithLayout } from "./_app";
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
     const { data: products, isLoading } = trpc.useQuery(["product.getAll"]);
     if (isLoading || !products) return <div>Loading...</div>;
 
@@ -19,6 +22,10 @@ const Home: NextPage = () => {
             </div>
         </div>
     );
+};
+
+Home.getLayout = function getLayout(page: ReactElement) {
+    return <Layout>{page}</Layout>;
 };
 
 export default Home;
