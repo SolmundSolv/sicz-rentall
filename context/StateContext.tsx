@@ -4,6 +4,7 @@ interface AppContextProps {
     cartItems: any;
     totalPrice: number;
     onAdd: Function;
+    onRemove: Function;
 }
 
 interface Product {
@@ -17,14 +18,25 @@ interface Product {
 const Context = createContext<AppContextProps | null>(null);
 
 const StateContext = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]);
+    const cart: Product[] = [];
+    const [cartItems, setCartItems] = useState(cart);
     const [totalPrice, setTotalPrice] = useState(0);
-    const onAdd = (item) => {
-        if (cartItems.find((product) => product.id === item.id)) {
+    let foundProduct;
+    let index: number;
+    const onAdd = (item: Product) => {
+        if (cartItems.find((product: Product) => product.id === item.id)) {
             return;
         }
         setCartItems([...cartItems, { ...item }]);
-        setTotalPrice(parseInt(item.price) + totalPrice);
+        setTotalPrice((currPrice) => {
+            return parseInt(item.price) + currPrice;
+        });
+    };
+    const onRemove = (item: Product) => {
+        foundProduct = cartItems.find((product: Product) => product.id === item.id);
+        const newCartItems = cartItems.filter((product: Product) => product.id !== foundProduct.id);
+        setCartItems(newCartItems);
+        setTotalPrice(totalPrice - foundProduct.price);
     };
     return (
         <Context.Provider
@@ -32,6 +44,7 @@ const StateContext = ({ children }) => {
                 cartItems,
                 totalPrice,
                 onAdd,
+                onRemove,
             }}
         >
             {children}

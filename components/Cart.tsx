@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
+import Link from "next/link";
 import React, { Fragment, useState, useRef } from "react";
-import { map } from "zod";
 import { useStateContext } from "../context/StateContext";
 
 const Cart = ({ open, setOpen }) => {
@@ -32,13 +32,21 @@ const Cart = ({ open, setOpen }) => {
                     >
                         <Dialog.Panel className="absolute top-0 right-0 bottom-0 flex w-full max-w-md flex-col overflow-y-auto bg-white pb-12 shadow-xl dark:bg-gray-800 dark:text-white">
                             <div className="p-6">
-                                {ctx?.cartItems.map((item, index) => (
-                                    <div>
-                                        {index + 1} {item.name}
-                                    </div>
-                                ))}
+                                <ul>
+                                    {ctx?.cartItems.map((item, index) => (
+                                        <li key={item.id}>
+                                            {index + 1} {item.name}{" "}
+                                            <button type="button" onClick={() => ctx.onRemove(item)}>
+                                                X
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                             {ctx?.totalPrice}
+                            <Link href="/cart" key="order">
+                                <button type="button">Order</button>
+                            </Link>
                         </Dialog.Panel>
                     </Transition.Child>
                 </div>

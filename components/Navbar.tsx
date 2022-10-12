@@ -4,25 +4,17 @@ import { Flowbite, DarkThemeToggle } from "flowbite-react";
 import Link from "next/link";
 import React, { Fragment, useState } from "react";
 import Cart from "./Cart";
+import { useStateContext } from "../context/StateContext";
 
 function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
 }
 const Navbar = ({ navigation }) => {
     const [open, setOpen] = useState(false);
+    const ctx = useStateContext();
 
     return (
         <>
-            {/* Logo */}
-            <div className="ml-4 flex w-32 lg:ml-0">
-                <Link href="/" className="h-full w-full cursor-pointer">
-                    <div>
-                        <span className="sr-only">Your Company</span>
-                        <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-                    </div>
-                </Link>
-            </div>
-
             {/* Flyout menus */}
             <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
                 <div className="flex h-full space-x-8">
@@ -30,6 +22,15 @@ const Navbar = ({ navigation }) => {
                         <Popover key={category.name} className="flex">
                             {({ open }) => (
                                 <>
+                                    {/* Logo */}
+                                    <div className="ml-4 flex w-16 items-center lg:ml-0">
+                                        <Link href="/" className="h-full w-full cursor-pointer">
+                                            <div>
+                                                <span className="sr-only">Your Company</span>
+                                                <img className="h-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+                                            </div>
+                                        </Link>
+                                    </div>
                                     <div className="relative flex">
                                         <Popover.Button
                                             className={classNames(
@@ -98,7 +99,7 @@ const Navbar = ({ navigation }) => {
                 </form>
             </div>
 
-            <div className="ml-auto flex items-center">
+            <div className="ml-auto flex items-center justify-start">
                 <div className="hidden text-gray-700 hover:text-gray-800 dark:text-white lg:flex lg:flex-1  lg:items-center lg:justify-end lg:space-x-6">
                     <a href="#" className="text-sm font-medium">
                         Sign in
@@ -109,19 +110,11 @@ const Navbar = ({ navigation }) => {
                     </a>
                 </div>
 
-                <div className="hidden lg:ml-8 lg:flex">
-                    <a href="#" className="flex items-center text-gray-700 hover:text-gray-800 dark:text-white">
-                        <img src="https://tailwindui.com/img/flags/flag-canada.svg" alt="" className="block h-auto w-5 flex-shrink-0" />
-                        <span className="ml-3 block text-sm font-medium">CAD</span>
-                        <span className="sr-only">, change currency</span>
-                    </a>
-                </div>
-
                 {/* Cart */}
                 <div className="mx-4 flow-root lg:ml-6">
                     <button type="button" onClick={() => setOpen(true)} className="group -m-2 flex items-center p-2">
                         <ShoppingBagIcon className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-yellow-400 dark:text-white">{ctx?.cartItems.length}</span>
                         <span className="sr-only">items in cart, view bag</span>
                     </button>
                 </div>
