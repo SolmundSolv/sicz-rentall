@@ -65,9 +65,6 @@ const navigation = {
     ],
 };
 
-function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(" ");
-}
 
 export default function Layout({ children }) {
     const [open, setOpen] = useState(false);
